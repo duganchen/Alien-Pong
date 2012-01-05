@@ -1,9 +1,9 @@
 Alien Pong
 ==========
 
-This is a school project from BCIT. It requires the following dependencies:
+This is an school project from my BCIT days. It requires the following dependencies:
 
-* [SFML](http://www.sfml-dev.org),
+* [SFML](http://www.sfml-dev.org) 1.x (tested with 1.5 and 1.6),
 * [Qt](http://qt.nokia.com),
 * [FTGL](http://ftl.wiki.sourceforge.net)
 
@@ -15,4 +15,11 @@ To compile, build and run from the Linux command-line, use the following command
 
 Use the cursor keys to control the right paddle. W and S move the left paddle up and down, respectively.
 
-The background music is from Epic Pinball. I do not have the copyright on it. All sounds are from findsounds.com. All of the graphics, as far as I remember, are either from the Hubble space telescope archive, or modified to the point of not being recognizable. I cannot remember where I got the score font. I hope that none of this is a problem.
+Please note that as this was an academic project, it was not implemented with distribution in mind. What this means is that I did not choose assets that were free from copyright or licensed for distribution. I hope this isn't a problem. In the interest of full disclosure, here's where everything's from:
+
+* The background music is from Epic Pinball.
+* The sound effects are from findsounds.com. 
+* The graphics, as far as I remember, are either from the Hubble space telescope archive, or modified to the point of not being recognizable.
+* The score font is one whose source I do not recall.
+
+If I have violated your copyright, please let me know immediately.
