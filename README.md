@@ -9,9 +9,9 @@ This is an school project from my BCIT days. It requires the following dependenc
 
 To compile, build and run from the Linux command-line, use the following commands:
 
->qmake
->make
->./alienpong
+	qmake
+	make
+	./alienpong
 
 Use the cursor keys to control the right paddle. W and S move the left paddle up and down, respectively.
 
