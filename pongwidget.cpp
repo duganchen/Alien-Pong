@@ -1,3 +1,4 @@
+#include <GL/glu.h>
 #include "pongwidget.h"
 
 PongWidget::PongWidget()

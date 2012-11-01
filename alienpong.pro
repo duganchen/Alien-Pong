@@ -19,10 +19,11 @@ HEADERS += gui.h \
     ball.h \
     paddle.h \
     audio.h
-RESOURCES += 
+RESOURCES +=
 LIBS += -lsfml-audio \
     -lsfml-system \
     -lsfml-window \
     -lsfml-graphics \
-    -lftgl
+    -lftgl \
+	-lGLU
 
