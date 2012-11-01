@@ -5,7 +5,7 @@ This is an old school project from my BCIT days. It requires the following depen
 
 * [SFML](http://www.sfml-dev.org) 1.x (tested with 1.5 and 1.6),
 * [Qt](http://qt.nokia.com),
-* [FTGL](http://ftl.wiki.sourceforge.net)
+* [FTGL](http://ftgl.wiki.sourceforge.net)
 
 To compile, build and run from the Linux command-line, use the following commands:
 
