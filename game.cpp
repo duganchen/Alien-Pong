@@ -13,7 +13,12 @@
 #include "ball.h"
 #include "paddle.h"
 #include "settings.h"
+#include "SDL.h"
+#include <memory>
+#include <stdexcept>
 
+
+using namespace std;
 
 void play(ISettings &settings)
 {
@@ -74,16 +79,28 @@ void play(ISettings &settings)
     topWallHeight = 1;
 
 #ifdef NO
-
     sf::Image images[TEXTURE_COUNT];
     sf::RenderWindow app;
     sf::WindowSettings settings;
     settings.AntialiasingLevel = 2;
     app.Create(sf::VideoMode(width, height, 32), "Alien Pong", sf::Style::Fullscreen, settings);
+#endif
 
+	SDL_Init(SDL_INIT_VIDEO);
+    SDL_Window* rawWindow = nullptr;
+    SDL_Renderer* rawRenderer = nullptr;
+	if (SDL_CreateWindowAndRenderer(settings.getWidth(), settings.getHeight(), SDL_WINDOW_OPENGL, &rawWindow, &rawRenderer) == -1)
+	{
+		throw runtime_error(SDL_GetError());
+	}
+
+	shared_ptr<SDL_Window> window(rawWindow, SDL_DestroyWindow);
+	shared_ptr<SDL_Renderer> renderer(rawRenderer, SDL_DestroyRenderer);
 
 
     glGenTextures(TEXTURE_COUNT, textures);
+
+#ifdef NO
     if (!images[TEXTURE_NEBULA].LoadFromFile("resources/bg.jpg"))
     {
         std::cout << "Unable to load bg.jpg" << std::endl;
@@ -650,6 +667,7 @@ void play(ISettings &settings)
 
 #endif
 
+	SDL_Quit();
 
 }
 
