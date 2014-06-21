@@ -9,6 +9,7 @@
 #include <sstream>
 #endif
 
+#include "game.h"
 #include "GL/glu.h"
 #include "ball.h"
 #include "paddle.h"
@@ -89,13 +90,15 @@ void play(ISettings &settings)
 	SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* rawWindow = nullptr;
     SDL_Renderer* rawRenderer = nullptr;
-	if (SDL_CreateWindowAndRenderer(settings.getWidth(), settings.getHeight(), SDL_WINDOW_OPENGL, &rawWindow, &rawRenderer) == -1)
+	if (SDL_CreateWindowAndRenderer(settings.getWidth(), settings.getHeight(), SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN, &rawWindow, &rawRenderer) == -1)
 	{
 		throw runtime_error(SDL_GetError());
 	}
 
 	shared_ptr<SDL_Window> window(rawWindow, SDL_DestroyWindow);
 	shared_ptr<SDL_Renderer> renderer(rawRenderer, SDL_DestroyRenderer);
+
+	glViewport(0, 0, settings.getWidth(), settings.getHeight());
 
 
     glGenTextures(TEXTURE_COUNT, textures);
@@ -170,7 +173,7 @@ void play(ISettings &settings)
     {
         std::cout << "Unable to load resources/AI_FIRE2.ogg" << std::endl;
         return;
-    }
+    https://gist.github.com/exavolt/2360410}
 
     if (!audio.loadBGM())
     {
@@ -179,6 +182,8 @@ void play(ISettings &settings)
     }
 
     audio.playBGM();
+
+#endif
 
     // Begin contents of initGL
 
@@ -199,7 +204,7 @@ void play(ISettings &settings)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     // Calculate The Aspect Ratio Of The Window
-    gluPerspective(45.0F, (width / (float)height), 0.1F, 10000.0f);
+    gluPerspective(45.0F, (settings.getWidth() / (float)settings.getHeight()), 0.1F, 10000.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(-1.5f, 0, -6);
@@ -226,14 +231,15 @@ void play(ISettings &settings)
     const float DEAD = -1;
     const int DEPTH = 2;
 
-    float particleLives[particleCount];
-    float particleVertices[particleCount * 4][DIMENSION_COUNT];
-    float particleVelocities[particleCount][DIMENSION_COUNT];
-    float particleTextures[particleCount * 4][2];
-    GLfloat particleColors[particleCount * 4][COMPONENT_COUNT];
+
+    float particleLives[settings.getParticleCount()];
+    float particleVertices[settings.getParticleCount() * 4][DIMENSION_COUNT];
+    float particleVelocities[settings.getParticleCount()][DIMENSION_COUNT];
+    float particleTextures[settings.getParticleCount() * 4][2];
+    GLfloat particleColors[settings.getParticleCount() * 4][COMPONENT_COUNT];
 
 
-    for (int particleIndex = 0; particleIndex < particleCount; particleIndex++)
+    for (int particleIndex = 0; particleIndex < settings.getParticleCount(); particleIndex++)
     {
         // Particles are already dead
         particleLives[particleIndex] = DEAD;
@@ -266,7 +272,7 @@ void play(ISettings &settings)
         particleTextures[particleIndex * 4 + 3][1] = 0.0f;
     }
 
-    glPointSize(particleSize);
+    glPointSize(settings.getParticleSize());
 
     // buildLists();
 
@@ -443,19 +449,17 @@ void play(ISettings &settings)
 
     // End contents of initGL
 
-
+	auto isRunning = false;
+#ifdef NO
     while (app.IsOpened())
     {
-
-
         //    app.Draw(text);
         sf::Event event;
         while (app.GetEvent(event))
         {
             if ((event.Type == sf::Event::KeyPressed) && (event.Key.Code == sf::Key::Escape))
             {
-                app.Close();
-                return;
+                isRunning = False;
             }
 
         }
@@ -480,9 +484,6 @@ void play(ISettings &settings)
 
 
         glCallList(background);
-
-
-
 
         // Let's have a cool orbiting planet
 
@@ -593,7 +594,7 @@ void play(ISettings &settings)
         ball.updateFrame(app.GetFrameTime());
         // And here we draw the particle trail
 
-        for (int i = 0; i < particleCount; i++)
+        for (int i = 0; i < settings.getParticleCount(); i++)
         {
             if (particleLives[i] <= 0)
             {
@@ -603,14 +604,14 @@ void play(ISettings &settings)
                 particleLives[i] = 1.0f - sf::Randomizer::Random(0.0f, 1.0f);
                 particleVelocities[i][0] = sf::Randomizer::Random(0.0f, 1.0f) - 0.5f;
                 particleVelocities[i][1] = sf::Randomizer::Random(0.0f, 1.0f) - 0.5f;
-                particleVertices[i * 4][0] = centerX - particleSize;
-                particleVertices[i * 4][1] = centerY - particleSize;
-                particleVertices[i * 4 + 1][0] = centerX + particleSize;
-                particleVertices[i * 4 + 1][1] = centerY - particleSize;
-                particleVertices[i * 4 + 2][0] = centerX + particleSize;
-                particleVertices[i * 4 + 2][1] = centerY + particleSize;
-                particleVertices[i * 4 + 3][0] = centerX - particleSize;
-                particleVertices[i * 4 + 3][1] = centerY + particleSize;
+                particleVertices[i * 4][0] = centerX - settings.getParticleSize();
+                particleVertices[i * 4][1] = centerY - settings.getParticleSize();
+                particleVertices[i * 4 + 1][0] = centerX + settings.getParticleSize();
+                particleVertices[i * 4 + 1][1] = centerY - settings.getParticleSize();
+                particleVertices[i * 4 + 2][0] = centerX + settings.getParticleSize();
+                particleVertices[i * 4 + 2][1] = centerY + settings.getParticleSize();
+                particleVertices[i * 4 + 3][0] = centerX - settings.getParticleSize();
+                particleVertices[i * 4 + 3][1] = centerY + settings.getParticleSize();
 
                 for (int j = 0; j < 4; j++)
                 {
@@ -643,7 +644,7 @@ void play(ISettings &settings)
         glVertexPointer(3, GL_FLOAT, 0, particleVertices);
         glColorPointer(4, GL_FLOAT, 0, particleColors);
         glTexCoordPointer(2, GL_FLOAT, 0, particleTextures);
-        glDrawArrays(GL_QUADS, 0, particleCount * 4);
+        glDrawArrays(GL_QUADS, 0, settings.getParticleCount() * 4);
 
         glEnable(GL_DEPTH_TEST);
         glPopMatrix();
@@ -666,7 +667,7 @@ void play(ISettings &settings)
     audio.stopBGM();
 
 #endif
-
+	SDL_Delay(5000);
 	SDL_Quit();
 
 }
