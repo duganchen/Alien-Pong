@@ -23,11 +23,10 @@ using namespace std;
 void play(ISettings &settings)
 {
 
-#ifdef NO
-
+/*
     FTGLPixmapFont font("resources/BlackHoleBB.ttf");
     font.FaceSize(72);
-#endif
+	*/
 
 
     // We begin by creating the planet
@@ -40,10 +39,14 @@ void play(ISettings &settings)
     float bottomWallHeight;
     float topWallHeight;
 
+	/*
     int leftScore = 0;
     int rightScore = 0;
+	*/
 
+	/*
     float planetAngle = 0;
+	*/
     const float ARENA_TOP = 1;
     const float ARENA_BOTTOM = -1;
     const float ARENA_LEFT = 0.1f;
@@ -51,9 +54,11 @@ void play(ISettings &settings)
     const GLuint TEXTURE_COUNT = 5;
     const int TEXTURE_NEBULA = 0;
     const int TEXTURE_MOON = 1;
+	/*
     const int TEXTURE_FIREBALL = 2;
     const int TEXTURE_BALL = 3;
     const int TEXTURE_GAS = 4;
+	*/
 
 
     const float ARENA_LEVEL = 3;
@@ -78,18 +83,10 @@ void play(ISettings &settings)
     bottomWallHeight = -1;
     topWallHeight = 1;
 
-#ifdef NO
-    sf::Image images[TEXTURE_COUNT];
-    sf::RenderWindow app;
-    sf::WindowSettings settings;
-    settings.AntialiasingLevel = 2;
-    app.Create(sf::VideoMode(width, height, 32), "Alien Pong", sf::Style::Fullscreen, settings);
-#endif
-
 	SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* rawWindow = nullptr;
     SDL_Renderer* rawRenderer = nullptr;
-	if (SDL_CreateWindowAndRenderer(settings.getWidth(), settings.getHeight(), SDL_WINDOW_OPENGL, &rawWindow, &rawRenderer) == -1)
+	if (SDL_CreateWindowAndRenderer(settings.getWidth(), settings.getHeight(), SDL_WINDOW_OPENGL, &rawWindow, &rawRenderer))
 	{
 		throw runtime_error(SDL_GetError());
 	}
@@ -97,12 +94,27 @@ void play(ISettings &settings)
 	shared_ptr<SDL_Window> window(rawWindow, SDL_DestroyWindow);
 	shared_ptr<SDL_Renderer> renderer(rawRenderer, SDL_DestroyRenderer);
 
-	glViewport(0, 0, (GLsizei)settings.getWidth(), (GLsizei)settings.getHeight());
+	glViewport(0, 0, settings.getWidth(), settings.getHeight());
 
+	SDL_RendererInfo rendererInfo;
+	if (SDL_GetRendererInfo(renderer.get(), &rendererInfo))
+	{
+		throw runtime_error(SDL_GetError());
+	}
+
+	if ((rendererInfo.flags & SDL_RENDERER_ACCELERATED) == 0)
+	{
+		throw runtime_error("Render surface is not accelerated.");
+	}
+
+	if ((rendererInfo.flags & SDL_RENDERER_TARGETTEXTURE) == 0)
+	{
+		throw runtime_error("Render surface not created.");
+	}
 
     glGenTextures(TEXTURE_COUNT, textures);
 
-#ifdef NO
+	/*
     if (!images[TEXTURE_NEBULA].LoadFromFile("resources/bg.jpg"))
     {
         std::cout << "Unable to load bg.jpg" << std::endl;
@@ -181,8 +193,7 @@ void play(ISettings &settings)
     }
 
     audio.playBGM();
-
-#endif
+	*/
 
     // Begin contents of initGL
 
@@ -462,7 +473,8 @@ void play(ISettings &settings)
 				isRunning = false;
 			}
 		}
-#ifdef NO
+
+		/*
         //    app.Draw(text);
         sf::Event event;
         while (app.GetEvent(event))
@@ -670,15 +682,16 @@ void play(ISettings &settings)
 
         // End contents of loop
 		//
-		#endif
 
+		*/
 
     }
 
-#ifdef no
+	/*
     glDeleteTextures(TEXTURE_COUNT, textures);
     audio.stopBGM();
-#endif
+	*/
+
 
 	SDL_Quit();
 
