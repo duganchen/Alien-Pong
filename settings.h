@@ -13,10 +13,8 @@ public:
 	virtual int getHeight() = 0;
 };
 
-#endif
 
-
-class Settings: ISettings
+class Settings: public ISettings
 {
 public:
 	int getParticleCount();
@@ -25,3 +23,6 @@ public:
 	int getHeight();
 	int getWidth();
 };
+
+
+#endif

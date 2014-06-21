@@ -1,4 +1,4 @@
-#include "paddle.h"
+#ifdef NO
 #include "ball.h"
 #include "game.h"
 #include "audio.h"
@@ -7,12 +7,15 @@
 #include <SFML/Graphics.hpp>
 #include <FTGL/ftgl.h>
 #include <sstream>
+#endif
 
-// Needed to compile
-// https://bugs.launchpad.net/ubuntu/+source/ftgl/+bug/151641
+#include "settings.h"
 
-void Game::play(int width, int height, int particleCount, float particleSize, int planetType)
+
+void play(ISettings &settings)
 {
+
+#ifdef NO
 
     FTGLPixmapFont font("resources/BlackHoleBB.ttf");
     font.FaceSize(72);
@@ -640,6 +643,7 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
     glDeleteTextures(TEXTURE_COUNT, textures);
     audio.stopBGM();
 
+#endif
 
 
 }

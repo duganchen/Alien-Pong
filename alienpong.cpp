@@ -1,19 +1,9 @@
-/*
-#include <QtGui/QApplication>
-#include "gui.h"
-*/
-
+#include "game.h"
 #include "settings.h"
 
 int main(int argc, char *argv[])
 {
 	Settings settings;
-	/*
-    QApplication a(argc, argv);
-    GUI w;
-    w.show();
-    return a.exec();
-	*/
-
+	play(settings);
 	return 0;
 }

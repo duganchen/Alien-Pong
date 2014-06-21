@@ -3,7 +3,7 @@ PROJECT(sdl2test)
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules")
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 
-ADD_EXECUTABLE(alienpong alienpong.cpp settings.cpp)
+ADD_EXECUTABLE(alienpong alienpong.cpp settings.cpp game.cpp)
 FIND_PACKAGE(SDL2 REQUIRED)
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 TARGET_LINK_LIBRARIES(alienpong ${SDL2_LIBRARIES})
