@@ -1,5 +1,5 @@
-#ifndef PADDLE_H
-#define PADDLE_H
+#ifndef ALIENPONG_PADDLE_H
+#define ALIENPONG_PADDLE_H
 
 class Paddle
 {

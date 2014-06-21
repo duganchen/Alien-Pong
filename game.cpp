@@ -9,6 +9,9 @@
 #include <sstream>
 #endif
 
+#include "GL/glu.h"
+#include "ball.h"
+#include "paddle.h"
 #include "settings.h"
 
 
@@ -19,6 +22,7 @@ void play(ISettings &settings)
 
     FTGLPixmapFont font("resources/BlackHoleBB.ttf");
     font.FaceSize(72);
+#endif
 
 
     // We begin by creating the planet
@@ -66,11 +70,12 @@ void play(ISettings &settings)
 
     Ball ball;
 
-    sf::Image images[TEXTURE_COUNT];
-
     bottomWallHeight = -1;
     topWallHeight = 1;
 
+#ifdef NO
+
+    sf::Image images[TEXTURE_COUNT];
     sf::RenderWindow app;
     sf::WindowSettings settings;
     settings.AntialiasingLevel = 2;

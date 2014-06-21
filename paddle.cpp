@@ -1,4 +1,8 @@
+#ifdef NO
 #include <SFML/Window.hpp>
+#endif
+
+#include <GL/gl.h>
 #include "paddle.h"
 
 const float Paddle::TOP_WALL_HEIGHT = 1;
