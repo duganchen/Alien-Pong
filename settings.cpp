@@ -21,11 +21,11 @@ PlanetType Settings::getPlanetType()
 
 int Settings::getWidth()
 {
-	return 1900;
+	return 1024;
 }
 
 
 int Settings::getHeight()
 {
-	return 1200;
+	return 768;
 }

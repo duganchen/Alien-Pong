@@ -18,7 +18,6 @@
 #include <memory>
 #include <stdexcept>
 
-
 using namespace std;
 
 void play(ISettings &settings)
@@ -90,7 +89,7 @@ void play(ISettings &settings)
 	SDL_Init(SDL_INIT_VIDEO);
     SDL_Window* rawWindow = nullptr;
     SDL_Renderer* rawRenderer = nullptr;
-	if (SDL_CreateWindowAndRenderer(settings.getWidth(), settings.getHeight(), SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN, &rawWindow, &rawRenderer) == -1)
+	if (SDL_CreateWindowAndRenderer(settings.getWidth(), settings.getHeight(), SDL_WINDOW_OPENGL, &rawWindow, &rawRenderer) == -1)
 	{
 		throw runtime_error(SDL_GetError());
 	}
@@ -98,7 +97,7 @@ void play(ISettings &settings)
 	shared_ptr<SDL_Window> window(rawWindow, SDL_DestroyWindow);
 	shared_ptr<SDL_Renderer> renderer(rawRenderer, SDL_DestroyRenderer);
 
-	glViewport(0, 0, settings.getWidth(), settings.getHeight());
+	glViewport(0, 0, (GLsizei)settings.getWidth(), (GLsizei)settings.getHeight());
 
 
     glGenTextures(TEXTURE_COUNT, textures);
@@ -208,7 +207,6 @@ void play(ISettings &settings)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(-1.5f, 0, -6);
-
 
     glEnable(GL_CULL_FACE); // Enable Culling
     glCullFace(GL_BACK);
@@ -449,10 +447,22 @@ void play(ISettings &settings)
 
     // End contents of initGL
 
-	auto isRunning = false;
-#ifdef NO
-    while (app.IsOpened())
+	auto isRunning = true;
+	SDL_Event e;
+    while (isRunning)
     {
+		while (SDL_PollEvent(&e))
+		{
+			if (e.type == SDL_QUIT)
+			{
+				isRunning = false;
+			}
+			if (e.type == SDL_KEYDOWN)
+			{
+				isRunning = false;
+			}
+		}
+#ifdef NO
         //    app.Draw(text);
         sf::Event event;
         while (app.GetEvent(event))
@@ -659,15 +669,17 @@ void play(ISettings &settings)
 
 
         // End contents of loop
+		//
+		#endif
 
 
     }
 
+#ifdef no
     glDeleteTextures(TEXTURE_COUNT, textures);
     audio.stopBGM();
-
 #endif
-	SDL_Delay(5000);
+
 	SDL_Quit();
 
 }
