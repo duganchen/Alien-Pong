@@ -3,9 +3,11 @@
 #include "gui.h"
 */
 
+#include "settings.h"
 
 int main(int argc, char *argv[])
 {
+	Settings settings;
 	/*
     QApplication a(argc, argv);
     GUI w;
