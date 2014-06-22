@@ -1,7 +1,7 @@
 #ifndef ALIENPONG_SETTINGS_H
 #define ALIENPONG_SETTINGS_H
 
-enum class PlanetType {Fire, Gas, Mirror,  Sapphire};
+enum class PlanetType {Fire, Gas, Mirror, Sapphire};
 
 class ISettings
 {

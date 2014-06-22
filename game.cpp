@@ -1,7 +1,6 @@
 #include "paddle.h"
 #include "ball.h"
 #include "game.h"
-#include "sdl_wrappers.h"
 /*
 #include "audio.h"
 #include <SFML/Window.hpp>
@@ -9,19 +8,26 @@
 #include <SFML/Graphics.hpp>
 #include <FTGL/ftgl.h>
 */
-#include "SDL.h"
 #include <sstream>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include "sdl_wrappers.h"
+
+// Needed to compile
+// https://bugs.launchpad.net/ubuntu/+source/ftgl/+bug/151641
 
 void play(const ISettings &settings)
 {
 	SDL();
-	auto contextFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-	auto window = createWindow( "SDL2 OpenGL Example", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, settings.getWidth(), settings.getHeight(), contextFlags);
+	auto windowFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+	auto window = createWindow("Alien Pong", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, settings.getWidth(), settings.getHeight(), windowFlags);
 	GLContext context(window);
 
 	/*
     FTGLPixmapFont font("resources/BlackHoleBB.ttf");
     font.FaceSize(72);
+	*/
+
 
 
     // We begin by creating the planet
@@ -69,76 +75,101 @@ void play(const ISettings &settings)
 
     Ball ball;
 
+	/*
     sf::Image images[TEXTURE_COUNT];
+	*/
 
     bottomWallHeight = -1;
     topWallHeight = 1;
 
+	/*
     sf::RenderWindow app;
     sf::WindowSettings settings;
     settings.AntialiasingLevel = 2;
     app.Create(sf::VideoMode(width, height, 32), "Alien Pong", sf::Style::Fullscreen, settings);
+	*/
 
 
 
     glGenTextures(TEXTURE_COUNT, textures);
+	/*
     if (!images[TEXTURE_NEBULA].LoadFromFile("resources/bg.jpg"))
     {
         std::cout << "Unable to load bg.jpg" << std::endl;
         return;
     }
+	*/
 
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_NEBULA]);
+	/*
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_NEBULA].GetWidth(), images[TEXTURE_NEBULA].GetHeight(),
                       GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_NEBULA].GetPixelsPtr());
+					  */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
+	/*
     if (!images[TEXTURE_MOON].LoadFromFile("resources/sapphire.jpg"))
     {
         std::cout << "Unable to load Moon.jpg" << std::endl;
         return;
     }
+	*/
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_MOON]);
+	/*(
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_MOON].GetWidth(), images[TEXTURE_MOON].GetHeight(),
                       GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_MOON].GetPixelsPtr());
+					  */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
+	/*
     if (!images[TEXTURE_FIREBALL].LoadFromFile("resources/fireball.jpg"))
     {
         std::cout << "Unable to load fireball.jpg" << std::endl;
         return;
     }
+	*/
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_FIREBALL]);
+	/*
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_FIREBALL].GetWidth(), images[TEXTURE_FIREBALL].GetHeight(),
                       GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_FIREBALL].GetPixelsPtr());
+					  */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
 
+	/*
     if (!images[TEXTURE_BALL].LoadFromFile("resources/ball.jpg"))
     {
         std::cout << "Unable to load ball.jpg" << std::endl;
         return;
     }
+	*/
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_BALL]);
+	/*
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_BALL].GetWidth(), images[TEXTURE_BALL].GetHeight(),
                       GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_BALL].GetPixelsPtr());
+					  */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
+	/*
     if (!images[TEXTURE_GAS].LoadFromFile("resources/gasgiant.jpg"))
     {
         std::cout << "Unable to load resources/gasgiant.jpg" << std::endl;
         return;
     }
+	*/
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_GAS]);
+	/*
     gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_GAS].GetWidth(), images[TEXTURE_GAS].GetHeight(),
                       GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_GAS].GetPixelsPtr());
+					  */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
+	/*
     Audio audio;
 
     if (!audio.loadBounce())
@@ -160,6 +191,7 @@ void play(const ISettings &settings)
     }
 
     audio.playBGM();
+	*/
 
     // Begin contents of initGL
 
@@ -180,7 +212,7 @@ void play(const ISettings &settings)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     // Calculate The Aspect Ratio Of The Window
-    gluPerspective(45.0F, (width / (float)height), 0.1F, 10000.0f);
+    gluPerspective(45.0F, (settings.getWidth() / (float)settings.getHeight()), 0.1F, 10000.0f);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTranslatef(-1.5f, 0, -6);
@@ -207,14 +239,14 @@ void play(const ISettings &settings)
     const float DEAD = -1;
     const int DEPTH = 2;
 
-    float particleLives[particleCount];
-    float particleVertices[particleCount * 4][DIMENSION_COUNT];
-    float particleVelocities[particleCount][DIMENSION_COUNT];
-    float particleTextures[particleCount * 4][2];
-    GLfloat particleColors[particleCount * 4][COMPONENT_COUNT];
+    float particleLives[settings.getParticleCount()];
+    float particleVertices[settings.getParticleCount() * 4][DIMENSION_COUNT];
+    float particleVelocities[settings.getParticleCount()][DIMENSION_COUNT];
+    float particleTextures[settings.getParticleCount() * 4][2];
+    GLfloat particleColors[settings.getParticleCount() * 4][COMPONENT_COUNT];
 
 
-    for (int particleIndex = 0; particleIndex < particleCount; particleIndex++)
+    for (int particleIndex = 0; particleIndex < settings.getParticleCount(); particleIndex++)
     {
         // Particles are already dead
         particleLives[particleIndex] = DEAD;
@@ -247,11 +279,7 @@ void play(const ISettings &settings)
         particleTextures[particleIndex * 4 + 3][1] = 0.0f;
     }
 
-    glPointSize(particleSize);
-
-    // buildLists();
-
-    // Begin contents of BuildLists
+    glPointSize(settings.getParticleSize());
 
     background = glGenLists(DISPLAY_LIST_COUNT);
 
@@ -417,19 +445,15 @@ void play(const ISettings &settings)
     glEnd();
     glEndList();
 
-    // End contents of BuildLists
+	auto isRunning = true;
+	SDL_Event event;
 
-
-
-
-    // End contents of initGL
-
-
-    while (app.IsOpened())
+    while (isRunning)
     {
 
 
         //    app.Draw(text);
+		/*
         sf::Event event;
         while (app.GetEvent(event))
         {
@@ -458,6 +482,7 @@ void play(const ISettings &settings)
         {
             rightPaddle.pushUp(app.GetFrameTime());
         }
+		*/
 
 
         glCallList(background);
@@ -469,18 +494,20 @@ void play(const ISettings &settings)
 
         // Rotate it
         glRotatef(planetAngle, 0, 0, 1);
+		/*
         planetAngle = planetAngle + 30 * app.GetFrameTime();
+		*/
 
-        switch (planetType)
+        switch (settings.getPlanetType())
         {
-        case FIRE:
-            glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_BALL]);
-            break;
-        case GAS:
-            glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_GAS]);
-            break;
-        case SAPPHIRE:
-            glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_MOON]);
+			case PlanetType::Fire:
+				glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_BALL]);
+				break;
+			case PlanetType::Gas:
+				glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_GAS]);
+				break;
+			case PlanetType::Sapphire:
+				glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_MOON]);
             break;
         default:
             break;
@@ -489,14 +516,11 @@ void play(const ISettings &settings)
 
         glCallList(planetIndex);
 
-
-
         glPushMatrix();
 
         glRotatef(2 * planetAngle, 0, 1, 0);
         glTranslatef(0, 0, 2);
         glRotatef(4 * planetAngle, 1, 0, 0);
-
 
         glCallList(cube);
 
@@ -505,7 +529,6 @@ void play(const ISettings &settings)
 
         glPopMatrix();
 
-
         glPopMatrix();
 
 
@@ -513,12 +536,7 @@ void play(const ISettings &settings)
 
         glPushMatrix();
 
-
-
-
-
         glCallList(arena);
-
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_BALL]);
@@ -527,20 +545,22 @@ void play(const ISettings &settings)
 
         glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
 
-
         leftPaddle.draw();
         rightPaddle.draw();
 
-
         if (ball.top() > topWallHeight)
         {
+			/*
             audio.playBounce();
+			*/
             ball.bounceVertically();
         }
 
         if (ball.bottom() <= bottomWallHeight)
         {
+			/*
             audio.playBounce();
+			*/
             ball.bounceVertically();
         }
 
@@ -548,12 +568,16 @@ void play(const ISettings &settings)
         {
             if (ball.isLeftBound() && ball.bottom() < leftPaddle.top() && ball.top() > leftPaddle.bottom())
             {
+				/*
                 audio.playBounce();
+				*/
                 ball.bounceHorizontally();
             }
             else if (ball.isRightBound() && ball.bottom() < rightPaddle.top() && ball.top() > rightPaddle.bottom())
             {
+				/*
                 audio.playBounce();
+				*/
                 ball.bounceHorizontally();
             }
             else
@@ -566,15 +590,20 @@ void play(const ISettings &settings)
                 {
                     leftScore++;
                 }
+				/*
                 audio.playWhoosh();
+				*/
                 ball.moveToCenter();
             }
         }
 
+		/*
         ball.updateFrame(app.GetFrameTime());
+		*/
         // And here we draw the particle trail
 
-        for (int i = 0; i < particleCount; i++)
+		/*
+        for (int i = 0; i < settings.getParticleCount(); i++)
         {
             if (particleLives[i] <= 0)
             {
@@ -584,14 +613,14 @@ void play(const ISettings &settings)
                 particleLives[i] = 1.0f - sf::Randomizer::Random(0.0f, 1.0f);
                 particleVelocities[i][0] = sf::Randomizer::Random(0.0f, 1.0f) - 0.5f;
                 particleVelocities[i][1] = sf::Randomizer::Random(0.0f, 1.0f) - 0.5f;
-                particleVertices[i * 4][0] = centerX - particleSize;
-                particleVertices[i * 4][1] = centerY - particleSize;
-                particleVertices[i * 4 + 1][0] = centerX + particleSize;
-                particleVertices[i * 4 + 1][1] = centerY - particleSize;
-                particleVertices[i * 4 + 2][0] = centerX + particleSize;
-                particleVertices[i * 4 + 2][1] = centerY + particleSize;
-                particleVertices[i * 4 + 3][0] = centerX - particleSize;
-                particleVertices[i * 4 + 3][1] = centerY + particleSize;
+                particleVertices[i * 4][0] = centerX - settings.getParticleSize();
+                particleVertices[i * 4][1] = centerY - settings.getParticleSize();
+                particleVertices[i * 4 + 1][0] = centerX + settings.getParticleSize();
+                particleVertices[i * 4 + 1][1] = centerY - settings.getParticleSize();
+                particleVertices[i * 4 + 2][0] = centerX + settings.getParticleSize();
+                particleVertices[i * 4 + 2][1] = centerY + settings.getParticleSize();
+                particleVertices[i * 4 + 3][0] = centerX - settings.getParticleSize();
+                particleVertices[i * 4 + 3][1] = centerY + settings.getParticleSize();
 
                 for (int j = 0; j < 4; j++)
                 {
@@ -613,6 +642,7 @@ void play(const ISettings &settings)
 
             }
         }
+		*/
 
 
         glEnable(GL_TEXTURE_2D);
@@ -624,7 +654,7 @@ void play(const ISettings &settings)
         glVertexPointer(3, GL_FLOAT, 0, particleVertices);
         glColorPointer(4, GL_FLOAT, 0, particleColors);
         glTexCoordPointer(2, GL_FLOAT, 0, particleTextures);
-        glDrawArrays(GL_QUADS, 0, particleCount * 4);
+        glDrawArrays(GL_QUADS, 0, settings.getParticleCount() * 4);
 
         glEnable(GL_DEPTH_TEST);
         glPopMatrix();
@@ -633,9 +663,28 @@ void play(const ISettings &settings)
         std::ostringstream s;
         s << "Player 1: " << leftScore << "   Player 2: " << rightScore;
 
+		/*
         font.Render(s.str().c_str());
-        app.Display();
 
+        app.Display();
+		*/
+
+		SDL_GL_SwapWindow(window.get());
+
+		SDL_PollEvent(&event);
+		switch (event.type)
+		{
+			case SDL_KEYDOWN:
+				isRunning = false;
+				break;
+			case SDL_QUIT:
+				isRunning = false;
+				break;
+			default:
+				break;
+		}
+
+		SDL_Delay(1);
 
 
         // End contents of loop
@@ -644,12 +693,12 @@ void play(const ISettings &settings)
     }
 
     glDeleteTextures(TEXTURE_COUNT, textures);
+	/*
     audio.stopBGM();
-
-
 	*/
 
-}
 
+
+}
 
 
