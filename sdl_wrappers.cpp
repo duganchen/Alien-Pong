@@ -44,12 +44,3 @@ shared_ptr<SDL_Window> createWindow(const string title, int x, int y, int w, int
 	}
 	return shared_ptr<SDL_Window>(rawWindow, SDL_DestroyWindow);
 }
-
-
-void waitEvent(SDL_Event *event)
-{
-	if (!SDL_WaitEvent(event))
-	{
-		throw runtime_error(SDL_GetError());
-	}
-}

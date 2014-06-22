@@ -30,9 +30,5 @@ private:
 
 std::shared_ptr<SDL_Window> createWindow(const std::string, int, int, int, int, Uint32 flags);
 
-// Functions that need exception handling.
-
-void waitEvent(SDL_Event *);
-
 
 #endif
