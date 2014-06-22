@@ -1,5 +1,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
+#include <GL/gl.h>
 #include "ball.h"
 
 Ball::Ball()
@@ -49,8 +50,13 @@ void Ball::moveToCenter()
 {
     x = MIDDLE_X;
     y = 0;
+
+	/*
     xVelocity = sf::Randomizer::Random(0, 1) == 0 ? SPEED : -SPEED;
     yVelocity = sf::Randomizer::Random(0, 1) == 0 ? Ball::SPEED : -Ball::SPEED;
+	*/
+	xVelocity = SPEED;
+	yVelocity = SPEED;
 }
 
 void Ball::draw()

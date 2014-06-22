@@ -7,9 +7,9 @@ Audio::Audio()
 
 bool Audio::loadBounce()
 {
-    if (bounceBuffer.LoadFromFile("resources/Bounce.ogg"))
+    if (bounceBuffer.loadFromFile("resources/Bounce.ogg"))
     {
-        bounce.SetBuffer(bounceBuffer);
+        bounce.setBuffer(bounceBuffer);
         return true;
     }
     return false;
@@ -17,9 +17,9 @@ bool Audio::loadBounce()
 
 bool Audio::loadWhoosh()
 {
-    if (whooshBuffer.LoadFromFile("resources/AI_FIRE2.ogg"))
+    if (whooshBuffer.loadFromFile("resources/AI_FIRE2.ogg"))
     {
-        whoosh.SetBuffer(whooshBuffer);
+        whoosh.setBuffer(whooshBuffer);
         return true;
     }
     return false;
@@ -27,30 +27,30 @@ bool Audio::loadWhoosh()
 
 bool Audio::loadBGM()
 {
-    if (!bgm.OpenFromFile("resources/Android.ogg"))
+    if (!bgm.openFromFile("resources/Android.ogg"))
     {
         return false;
     }
-    bgm.SetLoop(true);
+    bgm.setLoop(true);
     return true;
 }
 
 void Audio::playBounce()
 {
-    bounce.Play();
+    bounce.play();
 }
 
 void Audio::playWhoosh()
 {
-    whoosh.Play();
+    whoosh.play();
 }
 
 void Audio::playBGM()
 {
-    bgm.Play();
+    bgm.play();
 }
 
 void Audio::stopBGM()
 {
-    bgm.Stop();
+    bgm.stop();
 }

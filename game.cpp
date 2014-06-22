@@ -71,67 +71,67 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
     topWallHeight = 1;
 
     sf::RenderWindow app;
-    sf::WindowSettings settings;
-    settings.AntialiasingLevel = 2;
-    app.Create(sf::VideoMode(width, height, 32), "Alien Pong", sf::Style::Fullscreen, settings);
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 2;
+    app.create(sf::VideoMode(width, height, 32), "Alien Pong", sf::Style::Fullscreen, settings);
 
 
 
     glGenTextures(TEXTURE_COUNT, textures);
-    if (!images[TEXTURE_NEBULA].LoadFromFile("resources/bg.jpg"))
+    if (!images[TEXTURE_NEBULA].loadFromFile("resources/bg.jpg"))
     {
         std::cout << "Unable to load bg.jpg" << std::endl;
         return;
     }
 
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_NEBULA]);
-    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_NEBULA].GetWidth(), images[TEXTURE_NEBULA].GetHeight(),
-                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_NEBULA].GetPixelsPtr());
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_NEBULA].getSize().x, images[TEXTURE_NEBULA].getSize().y,
+                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_NEBULA].getPixelsPtr());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-    if (!images[TEXTURE_MOON].LoadFromFile("resources/sapphire.jpg"))
+    if (!images[TEXTURE_MOON].loadFromFile("resources/sapphire.jpg"))
     {
         std::cout << "Unable to load Moon.jpg" << std::endl;
         return;
     }
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_MOON]);
-    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_MOON].GetWidth(), images[TEXTURE_MOON].GetHeight(),
-                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_MOON].GetPixelsPtr());
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_MOON].getSize().x, images[TEXTURE_MOON].getSize().y,
+                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_MOON].getPixelsPtr());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-    if (!images[TEXTURE_FIREBALL].LoadFromFile("resources/fireball.jpg"))
+    if (!images[TEXTURE_FIREBALL].loadFromFile("resources/fireball.jpg"))
     {
         std::cout << "Unable to load fireball.jpg" << std::endl;
         return;
     }
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_FIREBALL]);
-    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_FIREBALL].GetWidth(), images[TEXTURE_FIREBALL].GetHeight(),
-                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_FIREBALL].GetPixelsPtr());
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_FIREBALL].getSize().x, images[TEXTURE_FIREBALL].getSize().y,
+                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_FIREBALL].getPixelsPtr());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
 
-    if (!images[TEXTURE_BALL].LoadFromFile("resources/ball.jpg"))
+    if (!images[TEXTURE_BALL].loadFromFile("resources/ball.jpg"))
     {
         std::cout << "Unable to load ball.jpg" << std::endl;
         return;
     }
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_BALL]);
-    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_BALL].GetWidth(), images[TEXTURE_BALL].GetHeight(),
-                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_BALL].GetPixelsPtr());
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_BALL].getSize().x, images[TEXTURE_BALL].getSize().y,
+                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_BALL].getPixelsPtr());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-    if (!images[TEXTURE_GAS].LoadFromFile("resources/gasgiant.jpg"))
+    if (!images[TEXTURE_GAS].loadFromFile("resources/gasgiant.jpg"))
     {
         std::cout << "Unable to load resources/gasgiant.jpg" << std::endl;
         return;
     }
     glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_GAS]);
-    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_GAS].GetWidth(), images[TEXTURE_GAS].GetHeight(),
-                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_GAS].GetPixelsPtr());
+    gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, images[TEXTURE_GAS].getSize().x, images[TEXTURE_GAS].getSize().y,
+                      GL_RGBA, GL_UNSIGNED_BYTE, images[TEXTURE_GAS].getPixelsPtr());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
@@ -421,51 +421,57 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
     // End contents of initGL
 
 
-    while (app.IsOpened())
+    while (app.isOpen())
     {
 
 
         //    app.Draw(text);
         sf::Event event;
-        while (app.GetEvent(event))
+        while (app.pollEvent(event))
         {
-            if ((event.Type == sf::Event::KeyPressed) && (event.Key.Code == sf::Key::Escape))
+            if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
             {
-                app.Close();
+                app.close();
                 return;
             }
 
         }
 
-        if (app.GetInput().IsKeyDown(sf::Key::S))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         {
-            leftPaddle.pushDown(app.GetFrameTime());
+			// getFrameTime have been removed. Possibly see:
+			// http://www.koonsolo.com/news/dewitters-gameloop/
+
+            leftPaddle.pushDown(1);
         }
-        else if (app.GetInput().IsKeyDown(sf::Key::W))
+        else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
         {
-            leftPaddle.pushUp(app.GetFrameTime());
+            // leftPaddle.pushUp(app.GetFrameTime());
+			leftPaddle.pushUp(1);
         }
 
-        if (app.GetInput().IsKeyDown(sf::Key::Down))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            rightPaddle.pushDown(app.GetFrameTime());
+            // rightPaddle.pushDown(app.GetFrameTime());
+		    rightPaddle.pushDown(1);
         }
-        else if (app.GetInput().IsKeyDown(sf::Key::Up))
+
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            rightPaddle.pushUp(app.GetFrameTime());
+            // rightPaddle.pushUp(app.GetFrameTime());
+			rightPaddle.pushUp(1);
         }
 
 
         glCallList(background);
 
 
-
-
         // Let's have a cool orbiting planet
 
         // Rotate it
         glRotatef(planetAngle, 0, 0, 1);
-        planetAngle = planetAngle + 30 * app.GetFrameTime();
+        // planetAngle = planetAngle + 30 * app.GetFrameTime();
+		planetAngle = planetAngle + 30;
 
         switch (planetType)
         {
@@ -509,12 +515,7 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
 
         glPushMatrix();
 
-
-
-
-
         glCallList(arena);
-
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glBindTexture(GL_TEXTURE_2D, textures[TEXTURE_BALL]);
@@ -523,10 +524,8 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
 
         glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
 
-
         leftPaddle.draw();
         rightPaddle.draw();
-
 
         if (ball.top() > topWallHeight)
         {
@@ -567,7 +566,9 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
             }
         }
 
-        ball.updateFrame(app.GetFrameTime());
+        // ball.updateFrame(app.GetFrameTime());
+		ball.updateFrame(1);
+
         // And here we draw the particle trail
 
         for (int i = 0; i < particleCount; i++)
@@ -575,11 +576,19 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
             if (particleLives[i] <= 0)
             {
 
+				/*
                 float centerX = ball.left() + sf::Randomizer::Random(0.0f, 1.0f) * SPRITE_WIDTH;
                 float centerY = ball.top() - sf::Randomizer::Random(0.0f, 1.0f) * SPRITE_WIDTH;
                 particleLives[i] = 1.0f - sf::Randomizer::Random(0.0f, 1.0f);
                 particleVelocities[i][0] = sf::Randomizer::Random(0.0f, 1.0f) - 0.5f;
                 particleVelocities[i][1] = sf::Randomizer::Random(0.0f, 1.0f) - 0.5f;
+				*/
+
+				// sf::Randomizer is no longer in SFML. Use this for now to get it compiling...
+				float centerX = ball.left() + 0.5f * SPRITE_WIDTH;
+                float centerY = ball.top() - 0.5f * SPRITE_WIDTH;
+                particleLives[i] = 1.0f - 0.5f;
+
                 particleVertices[i * 4][0] = centerX - particleSize;
                 particleVertices[i * 4][1] = centerY - particleSize;
                 particleVertices[i * 4 + 1][0] = centerX + particleSize;
@@ -597,13 +606,18 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
             }
             else
             {
-                float decrease = app.GetFrameTime();
+                // float decrease = app.GetFrameTime();
+				float decrease = 1;
+
                 particleLives[i] -= decrease;
 
                 for (int j = 0; j < 4; j++)
                 {
-                    particleVertices[i * 4 + j][0] += particleVelocities[i][0] * app.GetFrameTime();
-                    particleVertices[i * 4 + j][1] += particleVelocities[i][1] * app.GetFrameTime();
+                    // particleVertices[i * 4 + j][0] += particleVelocities[i][0] * app.GetFrameTime();
+					particleVertices[i * 4 + j][0] += particleVelocities[i][0];
+                    // particleVertices[i * 4 + j][1] += particleVelocities[i][1] * app.GetFrameTime();
+					particleVertices[i * 4 + j][1] += particleVelocities[i][1];
+
                     particleColors[i * 4 + j][3] -= decrease;
                 }
 
@@ -630,7 +644,7 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
         s << "Player 1: " << leftScore << "   Player 2: " << rightScore;
 
         font.Render(s.str().c_str());
-        app.Display();
+        app.display();
 
 
 
@@ -641,9 +655,6 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
 
     glDeleteTextures(TEXTURE_COUNT, textures);
     audio.stopBGM();
-
-
-
 }
 
 
