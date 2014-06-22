@@ -3,6 +3,6 @@
 
 #include "settings.h"
 
-void play(ISettings &);
+void play(const ISettings &);
 
 #endif

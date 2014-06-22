@@ -1,31 +1,31 @@
 #include "settings.h"
 
 
-int Settings::getParticleCount()
+const int Settings::getParticleCount() const
 {
 	return 256;
 }
 
 
-float Settings::getParticleSize()
+const float Settings::getParticleSize() const
 {
 	return 0.05;
 }
 
 
-PlanetType Settings::getPlanetType()
+const PlanetType Settings::getPlanetType() const
 {
 	return PlanetType::Mirror;
 }
 
 
-int Settings::getWidth()
+const int Settings::getWidth() const
 {
 	return 1024;
 }
 
 
-int Settings::getHeight()
+const int Settings::getHeight() const
 {
 	return 768;
 }

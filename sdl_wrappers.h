@@ -1,6 +1,7 @@
-#ifndef SDL_H
-#define SDL_H
+#ifndef ALIENPONG_SDL_WRAPPERS_H
+#define ALIENPONG_SDL_WRAPPERS_H
 
+#include "SDL.h"
 #include <memory>
 #include <string>
 

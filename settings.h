@@ -6,22 +6,22 @@ enum class PlanetType {Fire, Gas, Mirror,  Sapphire};
 class ISettings
 {
 public:
-	virtual int getParticleCount() = 0;
-	virtual float getParticleSize() = 0;
-	virtual PlanetType getPlanetType() = 0;
-	virtual int getWidth() = 0;
-	virtual int getHeight() = 0;
+	virtual const int getParticleCount() const = 0;
+	virtual const float getParticleSize() const = 0;
+	virtual const PlanetType getPlanetType() const = 0;
+	virtual const int getWidth() const = 0;
+	virtual const int getHeight() const = 0;
 };
 
 
 class Settings: public ISettings
 {
 public:
-	int getParticleCount();
-	float getParticleSize();
-	PlanetType getPlanetType();
-	int getHeight();
-	int getWidth();
+	int const getParticleCount() const;
+	float const getParticleSize() const;
+	const PlanetType getPlanetType() const;
+	const int getHeight() const;
+	const int getWidth() const;
 };
 
 
