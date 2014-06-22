@@ -6,6 +6,8 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <FTGL/ftgl.h>
+#include <GL/glu.h>
+#include <GL/gl.h>
 #include <sstream>
 
 // Needed to compile

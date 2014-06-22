@@ -1,6 +1,7 @@
 #include "gui.h"
 #include <QtGui>
 #include <SFML/Window.hpp>
+#include <SFML/Window/VideoMode.hpp>
 #include "game.h"
 #include <iostream>
 
@@ -12,12 +13,13 @@ GUI::GUI(QWidget *parent)
     QVBoxLayout *radioLayout = new QVBoxLayout();
     resolutions = new QButtonGroup(this);
     bool found = false;
-    for (unsigned int i = 0; i < sf::VideoMode::GetModesCount(); ++i)
+	std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
+    for (unsigned int i = 0; i < modes.size(); ++i)
     {
-        int width = sf::VideoMode::GetMode(i).Width;
-        int height = sf::VideoMode::GetMode(i).Height;
-        int bpp = sf::VideoMode::GetMode(i).BitsPerPixel;
-        double aspect = (double)sf::VideoMode::GetMode(i).Width / sf::VideoMode::GetMode(i).Height;
+        int width = modes[i].width;
+        int height = modes[i].height;
+        int bpp = modes[i].bitsPerPixel;
+        double aspect = (double)modes[i].width / modes[i].height;
         if ((1.3325 < aspect && aspect < 1.3335 && bpp == 32)
             || (1.20 < aspect && aspect < 1.30))
             {
