@@ -9,12 +9,13 @@
 #include <GL/glu.h>
 #include <GL/gl.h>
 #include <sstream>
+#include <ctime>
+#include <cstdlib>
 
-// Needed to compile
-// https://bugs.launchpad.net/ubuntu/+source/ftgl/+bug/151641
 
 void Game::play(int width, int height, int particleCount, float particleSize, int planetType)
 {
+	srand((unsigned)time(0));
 
 	FTGLPixmapFont font("resources/BlackHoleBB.ttf");
 	font.FaceSize(72);
@@ -573,18 +574,11 @@ void Game::play(int width, int height, int particleCount, float particleSize, in
 			if (particleLives[i] <= 0)
 			{
 
-				/*
-				   float centerX = ball.left() + sf::Randomizer::Random(0.0f, 1.0f) * SPRITE_WIDTH;
-				   float centerY = ball.top() - sf::Randomizer::Random(0.0f, 1.0f) * SPRITE_WIDTH;
-				   particleLives[i] = 1.0f - sf::Randomizer::Random(0.0f, 1.0f);
-				   particleVelocities[i][0] = sf::Randomizer::Random(0.0f, 1.0f) - 0.5f;
-				   particleVelocities[i][1] = sf::Randomizer::Random(0.0f, 1.0f) - 0.5f;
-				   */
-
-				// sf::Randomizer is no longer in SFML. Use this for now to get it compiling...
-				float centerX = ball.left() + 0.5f * SPRITE_WIDTH;
-				float centerY = ball.top() - 0.5f * SPRITE_WIDTH;
-				particleLives[i] = 1.0f - 0.5f;
+				float centerX = ball.left() + ((float)rand() / (float) RAND_MAX) * SPRITE_WIDTH;
+                float centerY = ball.top() - ((float)rand() / (float) RAND_MAX) * SPRITE_WIDTH;
+                particleLives[i] = 1.0f - ((float)rand() / (float) RAND_MAX);
+                particleVelocities[i][0] = ((float)rand() / (float) RAND_MAX) - 0.5f;
+                particleVelocities[i][1] = ((float)rand() / (float) RAND_MAX) - 0.5f;
 
 				particleVertices[i * 4][0] = centerX - particleSize;
 				particleVertices[i * 4][1] = centerY - particleSize;
