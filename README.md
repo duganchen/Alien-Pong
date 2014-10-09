@@ -3,7 +3,7 @@ Alien Pong
 
 This is an old school project from my BCIT days. It requires the following dependencies:
 
-* [SFML](http://www.sfml-dev.org) 1.x (tested with 1.5 and 1.6),
+* [SFML](http://www.sfml-dev.org)  (tested with 2.1),
 * [Qt](http://qt.nokia.com),
 * [FTGL](http://ftgl.wiki.sourceforge.net)
 
